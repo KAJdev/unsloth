@@ -8,7 +8,7 @@ def handler(job):
     args = job_input.get("args", {})
     creds = job_input.get("credentials", {})
 
-    cmd = ["unsloth", "train"]
+    cmd = ["python", "-m", "unsloth", "train"]
 
     for key, value in args.items():
         flag = f"--{key.replace('_', '-')}"

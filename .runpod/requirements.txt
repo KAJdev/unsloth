@@ -1,2 +1,2 @@
 runpod
-unsloth
+unsloth[cu121-torch240]
