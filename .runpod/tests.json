@@ -3,7 +3,8 @@
     {
       "name": "unsloth_tiny_sft_test",
       "input": {
-        "base_model": "unsloth/tinyllama-bnb-4bit",
+        "model_name": "unsloth/tinyllama-bnb-4bit",
+        "load_in_4bit": true,
         "dataset": "ybelkada/tiny_shakespeare",
         "output_dir": "/workspace/out/unsloth-test",
         "adapter": "qlora",
