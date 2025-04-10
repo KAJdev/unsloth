@@ -3,21 +3,12 @@
     {
       "name": "unsloth_tiny_sft_test",
       "input": {
-        "user_id": "test-user",
-        "model_id": "unsloth-tiny-test",
-        "run_id": "unsloth-quick-1",
-        "credentials": {
-          "wandb_api_key": "",
-          "hf_token": ""
-        },
-        "args": {
-          "base_model": "unsloth/tinyllama-bnb-4bit",
-          "dataset": "ybelkada/tiny_shakespeare",
-          "output_dir": "/workspace/out/unsloth-test",
-          "adapter": "qlora",
-          "num_epochs": 1,
-          "batch_size": 1
-        }
+        "base_model": "unsloth/tinyllama-bnb-4bit",
+        "dataset": "ybelkada/tiny_shakespeare",
+        "output_dir": "/workspace/out/unsloth-test",
+        "adapter": "qlora",
+        "num_epochs": 1,
+        "batch_size": 1
       },
       "timeout": 100000
     }

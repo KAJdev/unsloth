@@ -2,39 +2,40 @@ import runpod
 import subprocess
 import os
 
+import train
+
 
 def handler(job):
     job_input = job["input"]
-    args = job_input.get("args", {})
-    creds = job_input.get("credentials", {})
 
-    cmd = ["python", "-m", "unsloth", "train"]
+    # turn job_input into a class with attributes
+    class JobInput:
+        def __init__(self, **kwargs):
+            for key, value in kwargs.items():
+                setattr(self, key, value)
 
-    for key, value in args.items():
-        flag = f"--{key.replace('_', '-')}"
-        if isinstance(value, bool):
-            if value:
-                cmd.append(flag)
-        elif isinstance(value, list):
-            cmd.append(flag)
-            cmd.extend(map(str, value))
-        else:
-            cmd.extend([flag, str(value)])
+        def __getattr__(self, item):
+            return None
 
-    env = os.environ.copy()
-    if creds.get("hf_token"):
-        env["HF_TOKEN"] = creds["hf_token"]
-    if creds.get("wandb_api_key"):
-        env["WANDB_API_KEY"] = creds["wandb_api_key"]
+        def __setattr__(self, key, value):
+            if key not in self.__dict__:
+                self.__dict__[key] = value
+            else:
+                raise AttributeError(f"Cannot set attribute {key}")
+
+        def get(self, key, default=None):
+            return getattr(self, key, default)
+
+    job_input = JobInput(**job_input)
 
     try:
-        subprocess.run(cmd, check=True, env=env)
+        train.run(job_input)
     except subprocess.CalledProcessError as e:
         return {"error": str(e)}
 
     return {
         "status": "Training complete",
-        "output_dir": args.get("output_dir", "outputs"),
+        "output_dir": job_input.get("output_dir", "outputs"),
     }
 
 
